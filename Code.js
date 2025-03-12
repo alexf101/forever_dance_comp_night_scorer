@@ -155,7 +155,7 @@ FINALS_CONFIG = {
       title: "LATIN FINALS",
     },
     modern: {
-      row: 26,
+      row: 32,
       col: 1,
       title: "MODERN FINALS",
     },
@@ -165,7 +165,7 @@ FINALS_CONFIG = {
       title: "STREET LATIN FINALS",
     },
     nv: {
-      row: 26,
+      row: 32,
       col: 6,
       title: "NEW VOGUE FINALS",
     },
@@ -202,6 +202,16 @@ function heatToRowCol(heatIndex) {
   } else if (heatIndex === 5) {
     return {
       row: 15,
+      col: 2
+    }
+  } else if (heatIndex === 6) {
+    return {
+      row: 22,
+      col: 0
+    }
+  } else if (heatIndex === 7) {
+    return {
+      row: 22,
       col: 2
     }
   } else {
