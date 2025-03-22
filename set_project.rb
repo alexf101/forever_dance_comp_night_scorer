@@ -16,9 +16,8 @@ if ARGV.empty? || !PROJECTS.key?(ARGV[0].to_sym)
   exit 1
 end
 
-JSON.parse(File.read(".clasp.json")) do |config|
-  config["scriptId"] = PROJECTS[ARGV[0].to_sym]
-end
+clasp_content = JSON.parse(File.read("clasp.json.template"))
+clasp_content["scriptId"] = PROJECTS[ARGV[0].to_sym]
 
-File.write(".clasp.json", JSON.pretty_generate(config))
+File.write(".clasp.json", JSON.pretty_generate(clasp_content))
 puts "Project ID set to #{PROJECTS[ARGV[0].to_sym]} for #{ARGV[0]}."
