@@ -101,7 +101,7 @@ HEATS_CONFIG = [
     "heats": HEATS_ROWS,
   },
   {
-    "titles": ["Bronze Latin", "Bronze New Vogue", "Bronze Modern", "Bronze Street Latin", "GV Latin", "GV New Vogue", "GV Modern", "GV Street Latin"],
+    "titles": ["Bronze Latin", "Bronze New Vogue", "Bronze Modern", "Bronze Street Latin", "GV Latin", "GV New Vogue", "GV Modern", "GV Street Latin", "Exhibition"],
     "numInputCols": 4,
     "leaders": {
       "name": 1, // A
@@ -131,6 +131,10 @@ HEATS_CONFIG = [
       {
         start: 41,
         end: 46
+      },
+      {
+        start: 49,
+        end: 54
       }
     ],
   }
