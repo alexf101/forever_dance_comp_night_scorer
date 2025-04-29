@@ -8,7 +8,7 @@ DEBUG = true
 // the heats; this is all done by teachers and checked by Jena
 // before the competition starts.
 
-STAR_AND_ABOVE = {}  // Just a placeholder value
+STAR_AND_ABOVE = "star_and_above"  // Just a placeholder value
 HEATS_ROWS = [
   {
     start: 5,
@@ -173,7 +173,15 @@ FINALS_CONFIG = {
       col: 6,
       title: "NEW VOGUE FINALS",
     },
-  }
+  },
+  finalists_list_location: "Finalists",
+}
+
+const LEVEL_ORDINAL = {
+  "bronze": 1,
+  "silver": 2,
+  "gold": 3,
+  STAR_AND_ABOVE: 4,
 }
 
 // Calculates the top-left offset for each heat of a given final
@@ -411,6 +419,8 @@ function readCompetitor(sheet, row, sheetLevel, competitorConfig) {
 
 function writeFinals(spreadsheet, finalists) {
   const sheet = spreadsheet.getSheetByName(FINALS_CONFIG.output_sheet);
+  const finalistsSheet = spreadsheet.getSheetByName(FINALS_CONFIG.finalists_list_location)
+  let lastFinalistWrittenRow = 1;
   for (const [style, outputLocation] of Object.entries(FINALS_CONFIG.output_locations)) {
     debugLog(style, outputLocation);
     sheet.getRange(outputLocation.row, outputLocation.col).setValue(
@@ -420,6 +430,10 @@ function writeFinals(spreadsheet, finalists) {
       debugLog("No finalists for style", style);
       continue;
     }
+    Array.from(finalists[style]).sort((a, b) => LEVEL_ORDINAL[a.level] - LEVEL_ORDINAL[b.level]).forEach(finalist => {
+      finalistsSheet.getRange(lastFinalistWrittenRow + 1, 1, 1, 2).setValues([[finalist.name, finalist.level]])
+      lastFinalistWrittenRow += 1;
+    })
     const heats = makeHeats(finalists[style]);
     debugLog("heats", heats);
     let rowsUsed = 0;
