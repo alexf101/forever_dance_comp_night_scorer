@@ -440,9 +440,9 @@ function clear() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(FINALS_CONFIG.output_sheet);
   for (const [style, outputLocation] of Object.entries(FINALS_CONFIG.output_locations)) {
-    [0,1,2,3].forEach(heat => {
+    [0,1,2,3,4,5,6,7].forEach(heat => {
       const heatOffset = heatToRowCol(heat);
-      [0,1,2,3,4].forEach(i => {
+      [0,1,2,3,4,5].forEach(i => {
         sheet.getRange(outputLocation.row + heatOffset.row + i + 1, outputLocation.col + heatOffset.col, 1, 2).clearContent();
       })
     });
