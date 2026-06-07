@@ -499,8 +499,12 @@ function makeHeats(finalists) {
   }
   byTeacher = byTeacher.slice(1);
   const remainingStudentCount = byTeacher.reduce(((soFar, entry) => soFar + entry[1].length), 0);
-  const avgExtraStudentsPerHeat = Math.ceil(remainingStudentCount / heatCount);
-  debugLog('student target', avgExtraStudentsPerHeat);
+  debugLog("remainingStudentCount", remainingStudentCount);
+  // Add this many more students every heat
+  const extraStudentsPerHeat = Math.floor(remainingStudentCount / heatCount);
+  // Plus one student for a number of heats equal to the remaining students
+  let extraStudentsRemaining = remainingStudentCount % heatCount;
+  debugLog('student target, remainder', extraStudentsPerHeat + ', ' + extraStudentsRemaining);
   let currentHeat = 0;
   debugLog("byTeacher remaining teachers", byTeacher);
   while (true) {
@@ -508,9 +512,20 @@ function makeHeats(finalists) {
     byTeacher.forEach((entry, index) => {
       let nextStudentForTeacher = entry[1].shift();
       if (nextStudentForTeacher) {
+        debugLog(`Assessing student ${nextStudentForTeacher.name} with teacher ${nextStudentForTeacher.teacher}`);
         // Is this heat full?
-        if (heats[currentHeat].length > avgExtraStudentsPerHeat) {
-          currentHeat += 1;
+        if (heats[currentHeat].length >= (extraStudentsPerHeat + 1)) { // +1 for the student in every heat
+          // We can maybe add one extra one
+          debugLog("current heat length, extra students remaining, extra students per heat + 2", heats[currentHeat].length + ', ' + extraStudentsRemaining + ', ' + (extraStudentsPerHeat + 2));
+          if ((extraStudentsRemaining > 0) && (heats[currentHeat].length < (extraStudentsPerHeat + 2))) { // + 2 because there should be N students per round (extraStudentsPerHeat) + 1 for the teacher in every heat + maybe 1 extra if we have already added them
+            // Stay in the current heat and decrement the amount of extra students remaining
+            debugLog("adding extra to current heat");
+            extraStudentsRemaining -= 1;
+          } else {
+            // No extra students remaining, or we've already added one here. On to the next heat.
+            debugLog("moving on");
+            currentHeat += 1;
+          }
         }
         debugLog(`Adding student ${nextStudentForTeacher.name} with teacher ${nextStudentForTeacher.teacher} to heat`, currentHeat);
         foundAStudent = true;
