@@ -440,7 +440,7 @@ function writeFinals(spreadsheet, finalists) {
                  .setFontWeight('bold');
                  
     Array.from(finalists[style]).sort((a, b) => LEVEL_ORDINAL[a.level.toLowerCase()] - LEVEL_ORDINAL[b.level.toLowerCase()]).forEach(finalist => {
-      finalistsSheet.getRange(++lastFinalistWrittenRow, 1, 1, 2).setValues([[finalist.name, finalist.level]]);
+      finalistsSheet.getRange(++lastFinalistWrittenRow, 1, 1, 2).setValues([[finalist.name, finalist.level]]).setFontWeight('normal');
     })
     
     // Add a blank row between styles
@@ -469,11 +469,14 @@ function clear() {
     [0,1,2,3,4,5,6,7].forEach(heat => {
       const heatOffset = heatToRowCol(heat);
       [0,1,2,3,4,5].forEach(i => {
-        sheet.getRange(outputLocation.row + heatOffset.row + i + 1, outputLocation.col + heatOffset.col, 1, 2).clearContent();
+        sheet.getRange(outputLocation.row + heatOffset.row + i + 1, outputLocation.col + heatOffset.col, 1, 2).clear();
       })
     });
   }
   sheet.getRange(FINALS_CONFIG.progress_bar.row, FINALS_CONFIG.progress_bar.col).setValue("");
+  // Clear the entire finalists list sheet too
+  const finalistsSheet = spreadsheet.getSheetByName(FINALS_CONFIG.finalists_list_location);
+  finalistsSheet.clear();
 }
 
 function makeHeats(finalists) {
