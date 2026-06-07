@@ -181,7 +181,11 @@ const LEVEL_ORDINAL = {
   "bronze": 1,
   "silver": 2,
   "gold": 3,
-  STAR_AND_ABOVE: 4,
+  "star": 4,
+  "premier star": 5,
+  "oscar": 6,
+  "mickey powell": 7,
+  [STAR_AND_ABOVE]: 4, // Map STAR_AND_ABOVE to same level as "star" for backward compatibility
 }
 
 // Calculates the top-left offset for each heat of a given final
@@ -420,7 +424,7 @@ function readCompetitor(sheet, row, sheetLevel, competitorConfig) {
 function writeFinals(spreadsheet, finalists) {
   const sheet = spreadsheet.getSheetByName(FINALS_CONFIG.output_sheet);
   const finalistsSheet = spreadsheet.getSheetByName(FINALS_CONFIG.finalists_list_location)
-  let lastFinalistWrittenRow = 1;
+  let lastFinalistWrittenRow = 0;
   for (const [style, outputLocation] of Object.entries(FINALS_CONFIG.output_locations)) {
     debugLog(style, outputLocation);
     sheet.getRange(outputLocation.row, outputLocation.col).setValue(
@@ -430,10 +434,18 @@ function writeFinals(spreadsheet, finalists) {
       debugLog("No finalists for style", style);
       continue;
     }
-    Array.from(finalists[style]).sort((a, b) => LEVEL_ORDINAL[a.level] - LEVEL_ORDINAL[b.level]).forEach(finalist => {
-      finalistsSheet.getRange(lastFinalistWrittenRow + 1, 1, 1, 2).setValues([[finalist.name, finalist.level]])
-      lastFinalistWrittenRow += 1;
+    
+    // Bold the style header
+    finalistsSheet.getRange(++lastFinalistWrittenRow, 1).setValue(style)
+                 .setFontWeight('bold');
+                 
+    Array.from(finalists[style]).sort((a, b) => LEVEL_ORDINAL[a.level.toLowerCase()] - LEVEL_ORDINAL[b.level.toLowerCase()]).forEach(finalist => {
+      finalistsSheet.getRange(++lastFinalistWrittenRow, 1, 1, 2).setValues([[finalist.name, finalist.level]]);
     })
+    
+    // Add a blank row between styles
+    ++lastFinalistWrittenRow;
+    
     const heats = makeHeats(finalists[style]);
     debugLog("heats", heats);
     let rowsUsed = 0;

@@ -2,8 +2,10 @@
 
 PROJECTS = {
   production: "1AREIfuQvYZz2YKqdoPCJkIpEBTbWCOdkgEvmWPCjfEokYkTtYsI8WpXa",
+  production_2: "1wFnZnOfQ0m9nuZgyTMXuDAa7-Caa1bwGCZxdeXnbKIr-IP-g2MmZpHwU",
   testing: "1-mV2oqpIzrynxw6ww8Fl18UPtqVfPK_e56IDo5tLRf5Z2E6uJgaXzXrS",
   snapshot: "1_DWZ1wZA55vYDH-XaMam_fV_OyunJJr77O9rNowNt3nVMHQViMSl4JFO",
+  debug_may_8: "14898l0orfqsoCwyVl-k31D5_dsnLj1muVqxpwh3QyZki9jYsClKn0rlw",
 }
 # Usage: ruby set_project.rb [production|testing|snapshot]
 # Example: ruby set_project.rb production
