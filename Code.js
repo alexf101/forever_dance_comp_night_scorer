@@ -506,7 +506,7 @@ function makeHeats(finalists) {
   while (true) {
     let foundAStudent = false;
     byTeacher.forEach((entry, index) => {
-      let nextStudentForTeacher = entry[1].pop();
+      let nextStudentForTeacher = entry[1].shift();
       if (nextStudentForTeacher) {
         // Is this heat full?
         if (heats[currentHeat].length > avgExtraStudentsPerHeat) {
